@@ -40,12 +40,11 @@ class App extends Component {
 
   async transfer(){
     if (this.currentAccount == null) {
-      console.log('not connected');
-      return;
+      await this.handleLogin()
     }
     let eos = ScatterJS.scatter.eos(this.network, Eos);
     try{
-      let result = await eos.transfer(this.currentAccount.name, 'eosfavorcomm', '0.0001 EOS', 'scatter demo dapp');
+      let result = await eos.transfer(this.currentAccount.name, 'eosfavorcomm', '0.0001 EOS', 'hello-eos-scatter, dapp demo transfer');
       console.log(result)
     } catch(e) {
       console.log("error", e)
@@ -54,8 +53,7 @@ class App extends Component {
 
   async sayHello(){
     if (this.currentAccount == null) {
-      console.log('not connected');
-      return;
+      await this.handleLogin()
     }
     //please change hello_contract_name to your contract account
     let hello_contract_name = 'itleakstoken';
@@ -70,6 +68,39 @@ class App extends Component {
                 {
                     account: hello_contract_name,
                     name: 'hi',
+                    authorization: [{
+                      actor: this.currentAccount.name,
+                      permission: this.currentAccount.authority
+                    }],
+                    data,
+                }
+            ]
+        }
+      )
+      console.log(tr)
+    } catch(e) {
+      console.log("error", e)
+    }
+  }
+
+  async claimeeth(){
+    if (this.currentAccount == null) {
+      await this.handleLogin()
+    }
+    //please change hello_contract_name to your contract account
+    let hello_contract_name = 'ethsidechain';
+    let eos = ScatterJS.scatter.eos(this.network, Eos);
+    try{
+      let data = {
+        from:this.currentAccount.name,
+        quantity:'0.0000 EETH'
+      }
+      let tr = await eos.transaction(
+        {
+            actions: [
+                {
+                    account: hello_contract_name,
+                    name: 'signup',
                     authorization: [{
                       actor: this.currentAccount.name,
                       permission: this.currentAccount.authority
@@ -107,6 +138,10 @@ class App extends Component {
           </div>
           <div className="Btn">
             <Button variant="contained" color="primary" onClick={this.sayHello.bind(this)}>sayHi</Button>
+          </div>
+          <div className="Btn">
+            <p>如果当前账号没有eeth，则可以claim, 会消耗0.24k Ram,  会获得3500 EETH</p>
+            <Button variant="contained" color="primary" onClick={this.claimeeth.bind(this)}>claim eeth</Button>
           </div>
       </div>
       </div>

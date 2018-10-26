@@ -1,4 +1,4 @@
-# eos-hello-scatter
+# hello-eos-scatter
 # 准备工作
 ## 安装scatter
 安装chrome scatter插件，并已绑定一个账号，具体参考
@@ -39,11 +39,10 @@ let result = await ScatterJS.scatter.getIdentity({accounts:[this.network]})
 this.currentAccount = result.accounts[0];
 console.log("login success,", this.currentAccount)
 ```
-## 详细代码
-https://github.com/itleaks/hello-eos-scatter
 ## 运行
 ```
 npm install
 npm -g install react-scripts
 npm start
 ```
+<img src="https://github.com/itleaks/hello-eos-scatter/blob/master/ui.jpg" width=400 height=356 />
